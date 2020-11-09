@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test task</title>
+    <style>
+        #input{
+            text-align: center;
+            padding: 10px;
+            position: relative;
+            top: 140px;
+        }
+        input{
+            padding: 10px;
+            margin: 3px;
+        }
+        .errorData{
+            border-color: crimson;
+            border-width: 2px;
+        }
+        nav{
+            display: block;
+            width: 100%;
+            /* margin: 0 auto 30px; */
+            background: rgba(0, 0, 0, 0.25);
+        }
+        #nav {
+            list-style: none;
+            margin: 0;
+            padding: 1em;
+            text-align: center;
+        }
+        #nav a {
+            text-decoration: none;
+            padding: 1em;
+            color: #695753;
+            transition: .3s linear;
+            color: white;
+            font-family: 'Arimo', sans-serif;
+            font-weight: bold;
+        }
+        #nav a:hover{
+            background: rgba(0,0,0,.3);
+        }
+        .menu_active{
+            background: rgba(0,0,0,.25);
+        }
+        #nav li {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <ul id=nav>
+            <li><a href="#" id="menu_signin">signin</a></li>
+            <li><a href="#" id="menu_signup">signup</a></li>
+            <li><a href="#" id="menu_info">info</a></li>
+            <li><a href="#" id="menu_latency">latency</a></li>
+            <li><a href="#" id="menu_logout">logout</a></li>
+        </ul>
+    </nav>
+    <div id="content">
+    </div>
+    <script src="http://127.0.0.1/main.js"></script>
+</body>
+</html>
