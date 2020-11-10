@@ -1,5 +1,6 @@
-const { dbFindUser } = require("../db/check_user");
+const { dbFindUser, dbCheckLogin } = require("../db/check_user");
 const { v4: uuidv4 } = require("uuid");
+const addUserDb = require("../db/new_user");
 
 const userList = [];
 const blackListToken = [];
@@ -30,14 +31,14 @@ async function findUser(user){
         userFromDb = await dbFindUser(user);
     }
     catch (error){
-        throw {message: error.message};
+        throw error;
     }
     
     if(!userFromDb){
         return false;
     }
 
-    addUser(userFromDb);
+    addUserToRamDb(userFromDb);
 
     return {
         id: userFromDb.id,
@@ -46,7 +47,7 @@ async function findUser(user){
     };
 }
 
-function addUser(user){
+function addUserToRamDb(user){
     userList.push({
         id: user.id,
         auth_id: user.auth_id,
@@ -57,7 +58,7 @@ function addUser(user){
     });
 }
 
-function findLogin(login){
+async function findLogin(login){
     for(let i of userList){
         if(i.auth_id==login){
             return true;
@@ -65,11 +66,21 @@ function findLogin(login){
     }
 
     try{
-        return dbCheckLogin(login);
+        return await dbCheckLogin(login);
     }
     catch (e){
         throw e;
     } 
+}
+
+async function addNewUser(user){
+    try{
+        console.log(await addUserDb(user));
+        // addUserToRamDb( await addUserDb(user));
+    }
+    catch (e){
+        throw e;
+    }
 }
 
 function findTokenKey(id){
@@ -106,3 +117,4 @@ module.exports.addToBlackList = addToBlackList;
 module.exports.checkBlackList = checkBlackList;
 module.exports.updateKey = updateKey;
 module.exports.findLogin = findLogin;
+module.exports.addNewUser = addNewUser;

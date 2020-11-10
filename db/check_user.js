@@ -23,7 +23,7 @@ async function dbCheckLogin(login){
     }
     return await pool.query(selectLogin)
         .then(res => {
-            return res.rows[0] ? true : false;
+            return !!res.rows[0];
         })
         .catch(err => {
             throw {message: "SQL error: " + err}
