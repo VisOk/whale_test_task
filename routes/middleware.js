@@ -1,4 +1,4 @@
-const { findUser } = require("../ramDB/init")
+const { findUser, findLogin } = require("../ramDB/init")
 const { generateToken, checkToken } = require("../token/jwt");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
@@ -47,7 +47,20 @@ const isAuth = function (req, res, next){
     next();
 }
 
+const checkAvailableLogin = function (req, res, next){
+    try{
+        return findLogin(req.body.login) ? res.status(200).json({
+            error: "Логин уже существует", 
+            errno: 1, 
+            }).end() : next();
+    }
+    catch (e){
+        return res.status(500).json({error: e.message}).end();
+    }
+}
+
 module.exports.corsHeaders = corsHeaders;
 module.exports.checkUser = checkUser;
 module.exports.isAuth = isAuth;
 module.exports.optionOk = optionOk;
+module.exports.checkAvailableLogin = checkAvailableLogin;

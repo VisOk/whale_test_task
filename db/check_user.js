@@ -15,6 +15,7 @@ async function dbFindUser(user){
         })
 }
 
+//True если логин найден
 async function dbCheckLogin(login){
     const selectLogin = {
         text: `SELECT * FROM "Users" where auth_id=$1`,

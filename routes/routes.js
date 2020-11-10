@@ -3,7 +3,7 @@ const router = express.Router();
 const md5 = require("md5");
 const ping = require("ping");
 const { generateToken, updateToken, deleteToken } = require("../token/jwt");
-const { corsHeaders, checkUser, isAuth, optionOk } = require("./middleware");
+const { corsHeaders, checkUser, isAuth, optionOk, checkAvailableLogin } = require("./middleware");
 
 
 router
@@ -16,8 +16,10 @@ router
 })
 
 .options("/signup", corsHeaders, optionOk)
-.post("/signup", corsHeaders, (req, res)=>{
-    
+.post("/signup", corsHeaders, checkAvailableLogin, (req, res)=>{
+    res.status(200).json({
+        token: `Bearer ${await generateToken({id: req.id, auth_id: req.auth_id})}`,
+    });
 })
 
 .get("/info", corsHeaders, isAuth, (req, res)=>{

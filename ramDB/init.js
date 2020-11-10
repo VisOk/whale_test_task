@@ -15,7 +15,7 @@ const blackListToken = [];
 */
 
 async function findUser(user){
-    for(let i in userList){
+    for(let i of userList){
         if(i.auth_id==user.login && i.password==user.password){
             return {
                 id: i.id,
@@ -52,8 +52,24 @@ function addUser(user){
         auth_id: user.auth_id,
         type_id: user.type_id,
         password: user.password,
-        key: uuidv4(),
+        // key: uuidv4(),
+        key: user.token,
     });
+}
+
+function findLogin(login){
+    for(let i of userList){
+        if(i.auth_id==login){
+            return true;
+        }
+    }
+
+    try{
+        return dbCheckLogin(login);
+    }
+    catch (e){
+        throw e;
+    } 
 }
 
 function findTokenKey(id){
@@ -89,3 +105,4 @@ module.exports.findTokenKey = findTokenKey;
 module.exports.addToBlackList = addToBlackList;
 module.exports.checkBlackList = checkBlackList;
 module.exports.updateKey = updateKey;
+module.exports.findLogin = findLogin;
