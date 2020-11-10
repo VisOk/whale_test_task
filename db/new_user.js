@@ -9,12 +9,10 @@ async function addUserDb(user){
     }
     return await pool.query(insertUser)
     .then(res => {
-        console.log(res.rows[0]);
         return res.rows[0];
     })
     .catch(err => {
         throw {message: "SQL error: " + err}
-        // return {error: "SQL error: " + err,};
     })
 }
 

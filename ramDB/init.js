@@ -75,8 +75,7 @@ async function findLogin(login){
 
 async function addNewUser(user){
     try{
-        console.log(await addUserDb(user));
-        // addUserToRamDb( await addUserDb(user));
+        addUserToRamDb( await addUserDb(user));
     }
     catch (e){
         throw e;
