@@ -11,7 +11,6 @@ async function dbFindUser(user){
         })
         .catch(err => {
             throw {message: "SQL error: " + err}
-            // return {error: "SQL error: " + err,};
         })
 }
 
@@ -27,9 +26,23 @@ async function dbCheckLogin(login){
         })
         .catch(err => {
             throw {message: "SQL error: " + err}
-            // return {error: "SQL error: " + err,};
+        })
+}
+
+async function findUserById(id){
+    const selectId = {
+        text: `SELECT * FROM "Users" where id=$1`,
+        values: [id],
+    }
+    return await pool.query(selectId)
+        .then(res => {
+            return res.rows[0];
+        })
+        .catch(err => {
+            throw {message: "SQL error: " + err, errno: 2, }
         })
 }
 
 module.exports.dbFindUser = dbFindUser;
 module.exports.dbCheckLogin = dbCheckLogin;
+module.exports.findUserById = findUserById;

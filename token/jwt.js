@@ -4,21 +4,35 @@ const { findTokenKey, addToBlackList, updateKey, checkBlackList } = require("../
 
 async function generateToken(data){
     const expiration = '10m';
-    return jwt.sign({ data, }, findTokenKey(data.id), { expiresIn: expiration });
+    try{
+        return jwt.sign({ data, }, await findTokenKey(data.id), { expiresIn: expiration });
+    }
+    catch (e){
+        throw e;
+    }
 }
 
-function updateToken(token){
+async function updateJwtToken(token){
     const expiration = '10m';
     const data = jwt.decode(token).data;
-    return jwt.sign( {data, }, findTokenKey(data.id), { expiresIn: expiration });
+    try{
+        return jwt.sign( {data, }, await findTokenKey(data.id), { expiresIn: expiration });
+    }
+    catch (e){
+        throw e;
+    }
+    
 }
 
 //True если токен подписан правильно и не в черном листе
-function checkToken(token){
+async function checkToken(token){
     try{
-        jwt.verify(token, findTokenKey(jwt.decode(token).data.id));
+        jwt.verify(token, (await findTokenKey(jwt.decode(token)).data.id));
     }
     catch (e){
+        if(e.errno==2){
+            throw e;
+        }
         return false;
     }
     if(checkBlackList(token)) return false;
@@ -26,10 +40,14 @@ function checkToken(token){
     return true;
 }
 
-function deleteToken(data){
+async function deleteToken(data){
     if(data.all){
-        console.log("all")
-        updateKey({ token: data.token, id: data.id, });
+        try{
+            await updateKey({ token: data.token, id: data.id, });
+        }
+        catch (e){
+            throw e;
+        }
     } else{
         addToBlackList(data.token);
     }
@@ -37,6 +55,6 @@ function deleteToken(data){
 
 
 module.exports.generateToken = generateToken;
-module.exports.updateToken = updateToken;
+module.exports.updateJwtToken = updateJwtToken;
 module.exports.checkToken = checkToken;
 module.exports.deleteToken = deleteToken;

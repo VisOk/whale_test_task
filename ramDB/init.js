@@ -1,4 +1,5 @@
-const { dbFindUser, dbCheckLogin } = require("../db/check_user");
+const { dbFindUser, dbCheckLogin, findUserById } = require("../db/check_user");
+const { updateTokenKeyDb } = require("../db/delete_token");
 const { v4: uuidv4 } = require("uuid");
 const addUserDb = require("../db/new_user");
 
@@ -75,19 +76,35 @@ async function findLogin(login){
 
 async function addNewUser(user){
     try{
-        addUserToRamDb( await addUserDb(user));
+        let newUser = await addUserDb(user);
+        addUserToRamDb(newUser);
+        return newUser;
     }
     catch (e){
         throw e;
     }
 }
 
-function findTokenKey(id){
+async function findTokenKey(id){
     for(let i of userList){
         if(i.id==id){
             return i.key;
         }
     }
+
+    let dbFind;
+    try{
+        dbFind = await findUserById(id);
+    }
+    catch (e){
+        throw e;
+    }
+
+    if(dbFind){
+        addUserToRamDb(dbFind);
+        return dbFind.token;
+    }
+
     return "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed";
 }
 
@@ -99,12 +116,20 @@ function checkBlackList(token){
     return blackListToken.includes(token);
 }
 
-function updateKey(data){
+async function updateKey(data){
+    let key = uuidv4();
     for(let i of userList){
         if(i.id==data.id){
-            i.key = uuidv4();
-            return;
+            i.key = key;
+            break;
         }
+    }
+
+    try{
+        await updateTokenKeyDb({id:data.id, token: key, });
+    }
+    catch(e){
+        throw e;
     }
 }
 

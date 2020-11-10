@@ -15,6 +15,7 @@ const apiSignIn = "http://127.0.0.1/signin";
 const apiSignUp = "http://127.0.0.1/signup";
 const apiLatency = "http://127.0.0.1/latency";
 const apiLogout = "http://127.0.0.1/logout?all=";
+const apiInfo = "http://127.0.0.1/info";
 
 nav.addEventListener("click", ()=>{
     switch(event.target.id){
@@ -171,7 +172,40 @@ function infoPage(button){
     activeMenuButton(button);
     page = "info";
 
-    content.innerHTML = ``;
+    content.innerHTML = `
+    <div id="input">
+        <h3>Get info</h3>
+        <input id="submit" type="button" value="Get Info">
+    </div>`;
+
+    button = document.getElementById("submit");
+
+    button.addEventListener("click", ()=>{
+        fetch(apiInfo, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token,
+              },
+        })
+        .then(res=>{
+            if(!res.ok){
+                console.error("Response status " + res.status);
+                return;
+            }
+            res.json()
+            .then(res=>{
+                token = res.token ? res.token : token;
+                console.log(res);
+            })
+            .catch(err=>{
+                console.error(err);
+            })
+        })
+        .catch(err=>{
+            console.error(err);
+        })
+    });
 }
 
 function latencyPage(button){
