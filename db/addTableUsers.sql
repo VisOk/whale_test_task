@@ -8,7 +8,7 @@ CREATE TABLE public."Users"
     auth_id text COLLATE pg_catalog."default" NOT NULL UNIQUE,
     type_id text COLLATE pg_catalog."default" NOT NULL,
     password text COLLATE pg_catalog."default" NOT NULL,
-    token json,
+    token text,
     create_date timestamp with time zone NOT NULL,
     last_signin timestamp with time zone,
     CONSTRAINT "Users_pkey" PRIMARY KEY (id)
