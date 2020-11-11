@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const md5 = require("md5");
 const ping = require("ping");
-const jwt = require("jsonwebtoken");
-const { generateToken, updateJwtToken, deleteToken } = require("../token/jwt");
+const { deleteToken } = require("../token/jwt");
 const { corsHeaders, 
     checkUser, 
     isAuth, 
