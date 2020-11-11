@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const { findTokenKey, addToBlackList, updateKey, checkBlackList } = require("../ramDB/init");
+const { addToBlackList, checkBlackList } = require("../ramDB/init");
+const { findTokenKey } = require("../ramDB/findTokenKey");
+const { updateKey } = require("../ramDB/updateTokenKey");
 
 
 async function generateToken(data){

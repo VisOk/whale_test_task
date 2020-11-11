@@ -1,4 +1,5 @@
-const { findUser, findLogin, addNewUser } = require("../ramDB/init")
+const { addNewUser } = require("../ramDB/addNewUser");
+const { findUser, findLogin } = require("../ramDB/findUser"); 
 const { generateToken, checkToken, updateJwtToken } = require("../token/jwt");
 const md5 = require("md5");
 const jwt = require("jsonwebtoken");
