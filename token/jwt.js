@@ -27,7 +27,7 @@ async function updateJwtToken(token){
 //True если токен подписан правильно и не в черном листе
 async function checkToken(token){
     try{
-        jwt.verify(token, (await findTokenKey(jwt.decode(token)).data.id));
+        jwt.verify(token, (await findTokenKey(jwt.decode(token).data.id)));
     }
     catch (e){
         if(e.errno==2){

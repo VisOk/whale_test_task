@@ -76,8 +76,7 @@ function signinPage(button){
         })
         .then(res=>{
             if(!res.ok){
-                console.log(res.status);
-                return;
+                // return;
             }
             res.json()
             .then(res=>{

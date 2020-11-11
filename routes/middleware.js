@@ -35,14 +35,20 @@ const checkUser = async function (req, res, next){
     }
 }
 
-const isAuth = function (req, res, next){
+const isAuth = async function (req, res, next){
     if(!req.headers.authorization || req.headers.authorization.split(" ")[0]!="Bearer"){
         return res.status(401).json({error: "Missing token"}).end();
     }
 
-    if(!checkToken(req.headers.authorization.split(" ")[1])){
-        return res.status(401).json({error: "invalid signature"}).end();
-    };
+    try{
+        if( !(await checkToken(req.headers.authorization.split(" ")[1])) ){
+            return res.status(401).json({error: "invalid signature"}).end();
+        };
+    }
+    catch (e){
+        return res.status(500).json(e).end();
+    }
+        
     
     let userData = jwt.decode(req.headers.authorization.split(" ")[1]).data;
     req.token = req.headers.authorization.split(" ")[1];
