@@ -60,7 +60,7 @@ router
 })
 
 .get("/main.js", (req, res)=>{
-    res.sendFile("D:/Projects/whale_test_task/front/main.js");
+    res.sendFile(__dirname.split("\\").slice(0, -1).join("\\") + "/front/main.js");
 })
 
 
